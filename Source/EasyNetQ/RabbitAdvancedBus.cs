@@ -302,7 +302,9 @@ namespace EasyNetQ
             string deadLetterRoutingKey = null,
             int? maxLength = null,
             int? maxLengthBytes = null,
-            CancellationToken cancellationToken = default
+            CancellationToken cancellationToken = default,
+            IDictionary<string, object> additionalArguments = null
+            
         )
         {
             Preconditions.CheckNotNull(name, "name");
@@ -341,6 +343,14 @@ namespace EasyNetQ
             if (maxLengthBytes.HasValue)
             {
                 arguments.Add("x-max-length-bytes", maxLengthBytes.Value);
+            }
+
+            if (additionalArguments != null)
+            {
+                foreach (var keyValuePair in additionalArguments)
+                {
+                    arguments.Add(keyValuePair.Key, keyValuePair.Value);
+                }
             }
 
             var queueDeclareOk = await clientCommandDispatcher.InvokeAsync(x => x.QueueDeclare(name, durable, exclusive, autoDelete, arguments), cancellationToken).ConfigureAwait(false);

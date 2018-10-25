@@ -151,6 +151,7 @@ namespace EasyNetQ
         /// <param name="maxLength">The maximum number of ready messages that may exist on the queue.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
         /// <param name="maxLengthBytes">The maximum size of the queue in bytes.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
         /// <param name="cancellationToken">The cancellation token</param>
+        /// <param name="additionalArguments">Any arguments that don't fall into one of the previous arguments. It can be used to set arguments for fields like those needed for the deduplication plugin</param>
         /// <returns>The queue</returns>
         Task<IQueue> QueueDeclareAsync(
             string name,
@@ -165,7 +166,8 @@ namespace EasyNetQ
             string deadLetterRoutingKey = null,
             int? maxLength = null,
             int? maxLengthBytes = null,
-            CancellationToken cancellationToken = default
+            CancellationToken cancellationToken = default,
+            IDictionary<string, object> additionalArguments = null
         );
 
 
