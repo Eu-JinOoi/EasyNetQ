@@ -402,7 +402,8 @@ namespace EasyNetQ
             bool autoDelete = false,
             string alternateExchange = null,
             bool delayed = false,
-            CancellationToken cancellationToken = default
+            CancellationToken cancellationToken = default,
+            IDictionary<string, object> additionalArguments = null
         )
         {
             Preconditions.CheckShortString(name, "name");
@@ -423,6 +424,13 @@ namespace EasyNetQ
             {
                 arguments.Add("x-delayed-type", type);
                 type = "x-delayed-message";
+            }
+            if (additionalArguments != null)
+            {
+                foreach (var keyValuePair in additionalArguments)
+                {
+                    arguments.Add(keyValuePair.Key, keyValuePair.Value);
+                }
             }
             
             await clientCommandDispatcher.InvokeAsync(x => x.ExchangeDeclare(name, type, durable, autoDelete, arguments), cancellationToken).ConfigureAwait(false);

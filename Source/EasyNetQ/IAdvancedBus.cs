@@ -207,6 +207,7 @@ namespace EasyNetQ
         /// <param name="alternateExchange">Route messages to this exchange if they cannot be routed.</param>
         /// <param name="delayed">If set, declares x-delayed-type exchange for routing delayed messages.</param>
         /// <param name="cancellationToken">The cancellation token</param>
+        /// <param name="additionalArguments">Any arguments that don't fall into one of the previous arguments. It can be used to set arguments for fields like those needed for the deduplication plugin</param>
         /// <returns>The exchange</returns>
         Task<IExchange> ExchangeDeclareAsync(
             string name,
@@ -216,7 +217,8 @@ namespace EasyNetQ
             bool autoDelete = false,
             string alternateExchange = null,
             bool delayed = false,
-            CancellationToken cancellationToken = default
+            CancellationToken cancellationToken = default,
+            IDictionary<string, object> additionalArguments = null
         );
 
         /// <summary>
