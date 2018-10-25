@@ -253,6 +253,7 @@ namespace EasyNetQ
         /// <param name="deadLetterRoutingKey">If set, will route message with the routing key specified, if not set, message will be routed with the same routing keys they were originally published with.</param>
         /// <param name="maxLength">The maximum number of ready messages that may exist on the queue.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
         /// <param name="maxLengthBytes">The maximum size of the queue in bytes.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
+        /// <param name="additionalArguments">Any arguments that don't fall into one of the previous arguments. It can be used to set arguments for fields like those needed for the deduplication plugin</param>
         /// <returns>
         /// The queue
         /// </returns>
@@ -268,7 +269,8 @@ namespace EasyNetQ
             string deadLetterExchange = null,
             string deadLetterRoutingKey = null,
             int? maxLength = null,
-            int? maxLengthBytes = null);
+            int? maxLengthBytes = null,
+            IDictionary<string, object> additionalArguments = null);
 
         /// <summary>
         /// Declare a queue. If the queue already exists this method does nothing
@@ -285,6 +287,7 @@ namespace EasyNetQ
         /// <param name="deadLetterRoutingKey">If set, will route message with the routing key specified, if not set, message will be routed with the same routing keys they were originally published with.</param>
         /// <param name="maxLength">The maximum number of ready messages that may exist on the queue.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
         /// <param name="maxLengthBytes">The maximum size of the queue in bytes.  Messages will be dropped or dead-lettered from the front of the queue to make room for new messages once the limit is reached</param>
+        /// <param name="additionalArguments">Any arguments that don't fall into one of the previous arguments. It can be used to set arguments for fields like those needed for the deduplication plugin</param>
         /// <returns>The queue</returns>
         Task<IQueue> QueueDeclareAsync(
             string name,
@@ -298,7 +301,8 @@ namespace EasyNetQ
             string deadLetterExchange = null,
             string deadLetterRoutingKey = null,
             int? maxLength = null,
-            int? maxLengthBytes = null);
+            int? maxLengthBytes = null,
+            IDictionary<string, object> additionalArguments = null);
 
         /// <summary>
         /// Delete a queue

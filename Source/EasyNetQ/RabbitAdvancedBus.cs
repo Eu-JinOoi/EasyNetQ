@@ -396,7 +396,8 @@ namespace EasyNetQ
             string deadLetterExchange = null,
             string deadLetterRoutingKey = null,
             int? maxLength = null,
-            int? maxLengthBytes = null)
+            int? maxLengthBytes = null,
+            IDictionary<string, object> additionalArguments = null)
 	        {
             Preconditions.CheckNotNull(name, "name");
 
@@ -439,6 +440,14 @@ namespace EasyNetQ
             {
                 arguments.Add("x-max-length-bytes", maxLengthBytes.Value);
             }
+            if (additionalArguments != null)
+            {
+                foreach (var keyValuePair in additionalArguments)
+                {
+                    arguments.Add(keyValuePair.Key, keyValuePair.Value);
+                }
+            }
+
 
             clientCommandDispatcher.Invoke(x => x.QueueDeclare(name, durable, exclusive, autoDelete, arguments));
             logger.DebugWrite("Declared Queue: '{0}', durable:{1}, exclusive:{2}, autoDelete:{3}, args:{4}", name, durable, exclusive, autoDelete, string.Join(", ", arguments.Select(kvp =>
@@ -458,7 +467,9 @@ namespace EasyNetQ
             string deadLetterExchange = null,
             string deadLetterRoutingKey = null,
             int? maxLength = null,
-            int? maxLengthBytes = null)
+            int? maxLengthBytes = null,
+            IDictionary<string, object> additionalArguments = null
+            )
         {
             Preconditions.CheckNotNull(name, "name");
 
@@ -501,6 +512,15 @@ namespace EasyNetQ
             {
                 arguments.Add("x-max-length-bytes", maxLengthBytes.Value);
             }
+            
+            if (additionalArguments != null)
+            {
+                foreach (var keyValuePair in additionalArguments)
+                {
+                    arguments.Add(keyValuePair.Key, keyValuePair.Value);
+                }
+            }
+
 
             await clientCommandDispatcher.InvokeAsync(x => x.QueueDeclare(name, durable, exclusive, autoDelete, arguments)).ConfigureAwait(false);
             logger.DebugWrite("Declared Queue: '{0}', durable:{1}, exclusive:{2}, autoDelete:{3}, args:{4}", name, durable, exclusive, autoDelete, string.Join(", ", arguments.Select(kvp =>
